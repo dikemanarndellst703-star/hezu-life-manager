@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="搭伙儿——为年轻合租生活设计的费用、清洁、物品与公约协作管家。" />
+    <meta name="theme-color" content="#ff6746" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23ff6746'/%3E%3Cpath d='M15 30 32 16l17 14v19H15z' fill='white'/%3E%3Cpath d='M26 49V36h12v13' fill='%23ff6746'/%3E%3C/svg%3E" />
+    <title>搭伙儿｜合租生活管家</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="主要导航">
+        <a class="brand" href="#" data-view="home" aria-label="搭伙儿首页">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 40 40"><path d="M7 19 20 8l13 11v14H7z"/><path d="M15 33V23h10v10"/></svg>
+          </span>
+          <span>搭伙儿</span>
+        </a>
+
+        <nav class="side-nav">
+          <button class="nav-item active" data-view="home"><span>⌂</span> 今日概览</button>
+          <button class="nav-item" data-view="expenses"><span>¥</span> 费用账本</button>
+          <button class="nav-item" data-view="chores"><span>✓</span> 清洁排班</button>
+          <button class="nav-item" data-view="supplies"><span>□</span> 公共物品</button>
+          <button class="nav-item" data-view="agreement"><span>◇</span> 室友公约</button>
+        </nav>
+
+        <div class="house-card">
+          <div class="house-card-top">
+            <span class="house-icon">🏠</span>
+            <span class="online-dot"></span>
+          </div>
+          <strong>梧桐里 302</strong>
+          <span>3 位室友 · 已同住 186 天</span>
+          <div class="avatars" aria-label="室友：小林、阿哲、然然">
+            <span class="avatar avatar-lin">林</span>
+            <span class="avatar avatar-zhe">哲</span>
+            <span class="avatar avatar-ran">然</span>
+          </div>
+        </div>
+      </aside>
+
+      <main>
+        <header class="topbar">
+          <button class="menu-button" id="menuButton" aria-label="打开导航">☰</button>
+          <div>
+            <p class="eyebrow" id="currentDate"></p>
+            <h1 id="pageTitle">晚上好，小林</h1>
+          </div>
+          <div class="top-actions">
+            <button class="icon-button" id="resetDemo" aria-label="重置演示数据" title="重置演示数据">↻</button>
+            <button class="notification-button" aria-label="3 条提醒">
+              <span>♢</span><i>3</i>
+            </button>
+            <div class="profile-avatar">林</div>
+          </div>
+        </header>
+
+        <section class="view active" id="home-view">
+          <div class="welcome-banner">
+            <div>
+              <span class="pill">本月合租状态</span>
+              <h2>日子不该糊涂过，<br />每一笔都算得明白。</h2>
+              <p>9 月账单已记录 8 笔，全部室友都完成了本周值日。</p>
+            </div>
+            <div class="banner-stat">
+              <div class="progress-ring" style="--progress: 82"><span>82<small>%</small></span></div>
+              <p>本月默契值</p>
+            </div>
+          </div>
+
+          <div class="metric-grid">
+            <article class="metric-card balance-card">
+              <div class="metric-label"><span class="metric-icon orange">¥</span> 我的待结算</div>
+              <strong id="myBalance">¥ 128.50</strong>
+              <p><span class="status-tag warning">待支付</span> 给阿哲 ¥86.50 · 给然然 ¥42</p>
+            </article>
+            <article class="metric-card">
+              <div class="metric-label"><span class="metric-icon blue">✓</span> 下次值日</div>
+              <strong>周六 · 9月14日</strong>
+              <p><span class="status-tag info">你的班</span> 厨房 + 客厅地面</p>
+            </article>
+            <article class="metric-card">
+              <div class="metric-label"><span class="metric-icon green">□</span> 物品提醒</div>
+              <strong><span id="lowStockCount">3</span> 件快用完</strong>
+              <p><span class="status-tag success">需补货</span> 纸巾、洗洁精、垃圾袋</p>
+            </article>
+          </div>
+
+          <div class="dashboard-grid">
+            <article class="panel expense-panel">
+              <div class="panel-heading">
+                <div><span class="section-kicker">共同账本</span><h3>最近费用</h3></div>
+                <button class="text-button" data-view="expenses">查看全部 →</button>
+              </div>
+              <div class="expense-list" id="homeExpenseList"></div>
+              <button class="primary-button full" data-open="expenseModal">＋ 记一笔共同支出</button>
+            </article>
+
+            <article class="panel chore-panel">
+              <div class="panel-heading">
+                <div><span class="section-kicker">本周轮值</span><h3>清洁接力棒</h3></div>
+                <span class="week-label">9.9 — 9.15</span>
+              </div>
+              <div class="chore-timeline" id="homeChoreList"></div>
+              <div class="streak-note"><span>🔥</span><p><strong>连续 4 周零拖欠</strong><br />保持住，干净的家让人心情更好。</p></div>
+            </article>
+
+            <article class="panel supplies-panel">
+              <div class="panel-heading">
+                <div><span class="section-kicker">共享仓库</span><h3>该补货啦</h3></div>
+                <button class="text-button" data-view="supplies">物品清单 →</button>
+              </div>
+              <div id="homeSupplyList" class="supply-mini-list"></div>
+            </article>
+
+            <article class="panel pact-panel">
+              <div class="panel-heading">
+                <div><span class="section-kicker">共同约定</span><h3>公约动态</h3></div>
+                <button class="text-button" data-view="agreement">完整公约 →</button>
+              </div>
+              <blockquote>“晚上 23:00 后请戴耳机，公共区域随手复原。”</blockquote>
+              <div class="pact-footer">
+                <div class="mini-avatars"><span>林</span><span>哲</span><span>然</span></div>
+                <p><strong>3/3 已同意</strong><br />更新于 8 月 26 日</p>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="view" id="expenses-view">
+          <div class="section-hero">
+            <div><span class="section-kicker">费用 AA</span><h2>每一笔，大家都心里有数</h2><p>自动均摊、实时计算欠款，不让“下次再算”变成糊涂账。</p></div>
+            <button class="primary-button" data-open="expenseModal">＋ 记一笔支出</button>
+          </div>
+          <div class="settlement-board">
+            <div><span>本月共同支出</span><strong id="totalExpenses">¥ 1,428.50</strong></div>
+            <div><span>我的应付</span><strong class="orange-text" id="expenseBalance">¥ 128.50</strong></div>
+            <div><span>待结清笔数</span><strong id="unsettledCount">3</strong></div>
+            <button class="outline-button" id="settleAll">一键结清</button>
+          </div>
+          <article class="panel table-panel">
+            <div class="panel-heading"><h3>9 月共同账单</h3><span class="week-label">按时间排序</span></div>
+            <div class="expense-table" id="expenseTable"></div>
+          </article>
+        </section>
+
+        <section class="view" id="chores-view">
+          <div class="section-hero">
+            <div><span class="section-kicker">清洁排班</span><h2>轮流出手，家就一直舒服</h2><p>任务自动轮换，完成后轻轻打卡，公平也有成就感。</p></div>
+            <button class="primary-button" id="rotateChores">↻ 下周轮换</button>
+          </div>
+          <div class="chore-board" id="choreBoard"></div>
+        </section>
+
+        <section class="view" id="supplies-view">
+          <div class="section-hero">
+            <div><span class="section-kicker">公共物品</span><h2>谁用了、还剩多少，一眼看见</h2><p>库存低于 25% 自动提醒，采购后可直接补满。</p></div>
+            <button class="primary-button" data-open="supplyModal">＋ 登记物品</button>
+          </div>
+          <div class="supply-grid" id="supplyGrid"></div>
+        </section>
+
+        <section class="view" id="agreement-view">
+          <div class="section-hero">
+            <div><span class="section-kicker">室友公约</span><h2>把边界说在前面，把体谅留在日常</h2><p>共同编辑、共同确认。规则不是约束，是让彼此住得自在。</p></div>
+            <button class="primary-button" data-open="ruleModal">＋ 新增约定</button>
+          </div>
+          <article class="agreement-card">
+            <div class="agreement-cover"><span>ROOMMATE PACT · V2.1</span><h3>梧桐里 302<br />室友公约</h3><p>生效日期：2026 年 8 月 26 日</p></div>
+            <div class="rule-list" id="ruleList"></div>
+            <div class="signature-row">
+              <div><span class="avatar avatar-lin">林</span><p>小林<br /><small>已确认</small></p></div>
+              <div><span class="avatar avatar-zhe">哲</span><p>阿哲<br /><small>已确认</small></p></div>
+              <div><span class="avatar avatar-ran">然</span><p>然然<br /><small>已确认</small></p></div>
+            </div>
+          </article>
+        </section>
+      </main>
+    </div>
+
+    <div class="toast" id="toast" role="status"></div>
+
+    <dialog id="expenseModal">
+      <form method="dialog" id="expenseForm">
+        <div class="modal-head"><div><span class="section-kicker">共同账本</span><h3>记一笔支出</h3></div><button class="close-button" value="cancel" aria-label="关闭">×</button></div>
+        <label>费用名称<input name="title" required placeholder="例如：9 月电费" /></label>
+        <div class="form-row"><label>金额（元）<input name="amount" type="number" min="0.01" step="0.01" required placeholder="0.00" /></label><label>付款人<select name="payer"><option>小林</option><option>阿哲</option><option>然然</option></select></label></div>
+        <label>参与分摊<div class="checkbox-row"><label><input type="checkbox" checked disabled /> 小林</label><label><input type="checkbox" checked disabled /> 阿哲</label><label><input type="checkbox" checked disabled /> 然然</label></div></label>
+        <p class="split-preview">将由 3 人平均分摊</p>
+        <button class="primary-button full" value="default">确认记账</button>
+      </form>
+    </dialog>
+
+    <dialog id="supplyModal">
+      <form method="dialog" id="supplyForm">
+        <div class="modal-head"><div><span class="section-kicker">共享仓库</span><h3>登记公共物品</h3></div><button class="close-button" value="cancel" aria-label="关闭">×</button></div>
+        <label>物品名称<input name="name" required placeholder="例如：洗衣液" /></label>
+        <div class="form-row"><label>当前数量<input name="count" type="number" min="1" required value="1" /></label><label>单位<input name="unit" required value="件" /></label></div>
+        <button class="primary-button full" value="default">加入清单</button>
+      </form>
+    </dialog>
+
+    <dialog id="ruleModal">
+      <form method="dialog" id="ruleForm">
+        <div class="modal-head"><div><span class="section-kicker">共同约定</span><h3>新增一条公约</h3></div><button class="close-button" value="cancel" aria-label="关闭">×</button></div>
+        <label>公约内容<textarea name="content" rows="4" required placeholder="把希望大家共同遵守的约定写清楚"></textarea></label>
+        <button class="primary-button full" value="default">发起共同确认</button>
+      </form>
+    </dialog>
+
+    <script src="app.js"></script>
+  </body>
+</html>
