@@ -59,6 +59,40 @@ function showToast(message) {
   showToast.timer = setTimeout(() => toast.classList.remove('show'), 2200);
 }
 
+const themeCatalog = {
+  dawn: { name: '城市晨光', color: '#3978f6' },
+  night: { name: '深海夜航', color: '#0d151c' },
+  utility: { name: '机械合租站', color: '#111820' },
+  garden: { name: '抹茶玫瑰', color: '#6e8267' },
+};
+
+function applyTheme(theme, announce = true) {
+  const nextTheme = themeCatalog[theme] ? theme : 'dawn';
+  document.documentElement.dataset.theme = nextTheme;
+  try { localStorage.setItem('roomie-theme', nextTheme); } catch {}
+  const metaTheme = $('meta[name="theme-color"]');
+  if (metaTheme) metaTheme.content = themeCatalog[nextTheme].color;
+  $$('[data-theme-option]').forEach(option => {
+    option.setAttribute('aria-pressed', String(option.dataset.themeOption === nextTheme));
+  });
+  $('#themeTrigger').title = `当前画风：${themeCatalog[nextTheme].name}`;
+  $('#themeSavedText').textContent = `${themeCatalog[nextTheme].name}已保存，下次打开继续使用`;
+  if (announce) showToast(`已切换为「${themeCatalog[nextTheme].name}」`);
+}
+
+function setThemePanel(open) {
+  const panel = $('#themePanel');
+  const scrim = $('#themeScrim');
+  panel.hidden = !open;
+  scrim.hidden = !open;
+  $('#themeTrigger').setAttribute('aria-expanded', String(open));
+  document.body.classList.toggle('theme-panel-open', open);
+  if (open) {
+    const selected = $('[data-theme-option][aria-pressed="true"]');
+    requestAnimationFrame(() => selected?.focus());
+  }
+}
+
 function setDate() {
   const now = new Date();
   $('#currentDate').textContent = new Intl.DateTimeFormat('zh-CN', { month: 'long', day: 'numeric', weekday: 'long' }).format(now);
@@ -439,7 +473,32 @@ $('#rotateChores').addEventListener('click', () => {
   persist(); renderChores(); showToast('下周排班已轮换');
 });
 $('#menuButton').addEventListener('click', () => $('.sidebar').classList.toggle('open'));
+$('#themeTrigger').addEventListener('click', () => setThemePanel($('#themePanel').hidden));
+$('#themeClose').addEventListener('click', () => { setThemePanel(false); $('#themeTrigger').focus(); });
+$('#themeScrim').addEventListener('click', () => { setThemePanel(false); $('#themeTrigger').focus(); });
+$$('[data-theme-option]').forEach(option => option.addEventListener('click', () => applyTheme(option.dataset.themeOption)));
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && !$('#themePanel').hidden) {
+    event.preventDefault();
+    setThemePanel(false);
+    $('#themeTrigger').focus();
+    return;
+  }
+  if (event.key === 'Tab' && !$('#themePanel').hidden) {
+    const focusable = $$('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled])', $('#themePanel'));
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last?.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first?.focus();
+    }
+  }
+});
 $('#resetDemo').addEventListener('click', () => { state = structuredClone(initialData); lastAISnapshot = null; persist(); renderAll(); $('#aiLastAction').textContent = '支持费用、值日、物品与公约；AI 不会未经确认直接修改共同数据。'; showToast('演示数据已重置'); });
 
+applyTheme(document.documentElement.dataset.theme, false);
 setDate();
 renderAll();

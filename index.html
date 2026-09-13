@@ -1,12 +1,26 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="dawn">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="搭伙儿——为年轻合租生活设计的费用、清洁、物品与公约协作管家。" />
-    <meta name="theme-color" content="#ff6746" />
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23ff6746'/%3E%3Cpath d='M15 30 32 16l17 14v19H15z' fill='white'/%3E%3Cpath d='M26 49V36h12v13' fill='%23ff6746'/%3E%3C/svg%3E" />
+    <meta name="theme-color" content="#3978f6" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%233978f6'/%3E%3Cpath d='M15 30 32 16l17 14v19H15z' fill='white'/%3E%3Cpath d='M26 49V36h12v13' fill='%233978f6'/%3E%3C/svg%3E" />
     <title>搭伙儿｜合租生活管家</title>
+    <script>
+      (() => {
+        const themes = ['dawn', 'night', 'utility', 'garden'];
+        const themeColors = { dawn: '#3978f6', night: '#0d151c', utility: '#111820', garden: '#6e8267' };
+        try {
+          const savedTheme = localStorage.getItem('roomie-theme');
+          const theme = themes.includes(savedTheme) ? savedTheme : 'dawn';
+          document.documentElement.dataset.theme = theme;
+          document.querySelector('meta[name="theme-color"]').content = themeColors[theme];
+        } catch (error) {
+          document.documentElement.dataset.theme = 'dawn';
+        }
+      })();
+    </script>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -56,6 +70,10 @@
             <button class="review-top-button" data-review-tab="flow" aria-label="查看产品思考">
               <span class="review-top-dot"></span>
               产品思考
+            </button>
+            <button class="theme-trigger" id="themeTrigger" type="button" aria-label="切换画风" aria-haspopup="dialog" aria-controls="themePanel" aria-expanded="false">
+              <span class="theme-trigger-icon" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+              <span class="theme-trigger-label">换画风</span>
             </button>
             <button class="icon-button" id="resetDemo" aria-label="重置演示数据" title="重置演示数据">↻</button>
             <button class="notification-button" aria-label="3 条提醒">
@@ -332,6 +350,41 @@
         </section>
       </main>
     </div>
+
+    <button class="theme-scrim" id="themeScrim" type="button" aria-label="关闭主题选择" hidden></button>
+    <section class="theme-panel" id="themePanel" role="dialog" aria-modal="true" aria-labelledby="themePanelTitle" hidden>
+      <div class="theme-panel-head">
+        <div>
+          <span class="section-kicker">FOUR LOOKS · SAME HOME</span>
+          <h2 id="themePanelTitle">给合租生活换个画风</h2>
+          <p>功能和位置保持不变，只改变空间的情绪。</p>
+        </div>
+        <button class="close-button" id="themeClose" type="button" aria-label="关闭主题选择">×</button>
+      </div>
+      <div class="theme-options" role="group" aria-label="选择界面主题">
+        <button class="theme-option theme-option-dawn" type="button" data-theme-option="dawn" aria-pressed="true">
+          <span class="theme-option-preview" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <span class="theme-option-copy"><strong>城市晨光</strong><small>经典白 · 清醒、高效、轻盈</small></span>
+          <span class="theme-option-check" aria-hidden="true">✓</span>
+        </button>
+        <button class="theme-option theme-option-night" type="button" data-theme-option="night" aria-pressed="false">
+          <span class="theme-option-preview" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <span class="theme-option-copy"><strong>深海夜航</strong><small>经典夜 · 安静、专注、低眩光</small></span>
+          <span class="theme-option-check" aria-hidden="true">✓</span>
+        </button>
+        <button class="theme-option theme-option-utility" type="button" data-theme-option="utility" aria-pressed="false">
+          <span class="theme-option-preview" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <span class="theme-option-copy"><strong>机械合租站</strong><small>机能派 · 网格、仪表、模块化</small></span>
+          <span class="theme-option-check" aria-hidden="true">✓</span>
+        </button>
+        <button class="theme-option theme-option-garden" type="button" data-theme-option="garden" aria-pressed="false">
+          <span class="theme-option-preview" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <span class="theme-option-copy"><strong>抹茶玫瑰</strong><small>柔彩派 · 松弛、温柔、有呼吸感</small></span>
+          <span class="theme-option-check" aria-hidden="true">✓</span>
+        </button>
+      </div>
+      <div class="theme-panel-foot"><span class="theme-saved-dot" aria-hidden="true"></span><span id="themeSavedText">已保存到本机，下次打开继续使用</span></div>
+    </section>
 
     <div class="toast" id="toast" role="status"></div>
 
