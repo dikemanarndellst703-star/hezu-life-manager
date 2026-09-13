@@ -50,6 +50,13 @@
             <h1 id="pageTitle">晚上好，小林</h1>
           </div>
           <div class="top-actions">
+            <button class="ai-top-button" data-open="aiModal" aria-label="打开 AI 合租助手">
+              <span>✦</span> AI 处理
+            </button>
+            <button class="review-top-button" data-review-tab="flow" aria-label="查看产品思考">
+              <span class="review-top-dot"></span>
+              产品思考
+            </button>
             <button class="icon-button" id="resetDemo" aria-label="重置演示数据" title="重置演示数据">↻</button>
             <button class="notification-button" aria-label="3 条提醒">
               <span>♢</span><i>3</i>
@@ -59,11 +66,34 @@
         </header>
 
         <section class="view active" id="home-view">
+          <section class="review-entry" aria-label="产品设计说明入口">
+            <div class="review-entry-index" aria-hidden="true">01</div>
+            <div class="review-entry-copy">
+              <span>CASE STUDY · AI PRODUCT</span>
+              <strong>不只看功能，也看看为什么这样设计</strong>
+              <p>5 分钟了解用户主流程、AI 能力边界、功能取舍与评估方法。</p>
+            </div>
+            <div class="review-entry-actions">
+              <button class="review-entry-link" data-review-tab="flow">查看用户主流程 <span>→</span></button>
+              <button class="review-entry-link secondary" data-review-tab="priority">查看设计方案 <span>↗</span></button>
+            </div>
+          </section>
+
+          <section class="ai-quick-entry" aria-label="AI 合租助手体验入口">
+            <div class="ai-orb" aria-hidden="true">✦</div>
+            <div class="ai-quick-copy">
+              <span>AI 合租助手 · INTERACTIVE DEMO</span>
+              <strong>把发生的事说一句，自动整理成可确认的行动</strong>
+              <p id="aiLastAction">支持费用、值日、物品与公约；AI 不会未经确认直接修改共同数据。</p>
+            </div>
+            <button class="ai-launch-button" data-open="aiModal">体验 AI 主流程 <span>→</span></button>
+          </section>
+
           <div class="welcome-banner">
             <div>
               <span class="pill">本月合租状态</span>
               <h2>日子不该糊涂过，<br />每一笔都算得明白。</h2>
-              <p>9 月账单已记录 8 笔，全部室友都完成了本周值日。</p>
+              <p>9 月账单已记录 8 笔，本周值日按计划进行中。</p>
             </div>
             <div class="banner-stat">
               <div class="progress-ring" style="--progress: 82"><span>82<small>%</small></span></div>
@@ -75,17 +105,17 @@
             <article class="metric-card balance-card">
               <div class="metric-label"><span class="metric-icon orange">¥</span> 我的待结算</div>
               <strong id="myBalance">¥ 128.50</strong>
-              <p><span class="status-tag warning">待支付</span> 给阿哲 ¥86.50 · 给然然 ¥42</p>
+              <p id="balanceDetail"><span class="status-tag warning">待支付</span> 2 笔费用待处理</p>
             </article>
             <article class="metric-card">
               <div class="metric-label"><span class="metric-icon blue">✓</span> 下次值日</div>
-              <strong>周六 · 9月14日</strong>
-              <p><span class="status-tag info">你的班</span> 厨房 + 客厅地面</p>
+              <strong id="nextChoreDate">周六 · 9月14日</strong>
+              <p id="nextChoreDetail"><span class="status-tag info">你的班</span> 厨房 + 客厅地面</p>
             </article>
             <article class="metric-card">
               <div class="metric-label"><span class="metric-icon green">□</span> 物品提醒</div>
               <strong><span id="lowStockCount">3</span> 件快用完</strong>
-              <p><span class="status-tag success">需补货</span> 纸巾、洗洁精、垃圾袋</p>
+              <p id="lowStockSummary"><span class="status-tag success">需补货</span> 抽纸、洗洁精、垃圾袋</p>
             </article>
           </div>
 
@@ -178,14 +208,169 @@
             </div>
           </article>
         </section>
+
+        <section class="view" id="design-view">
+          <div class="review-page-head">
+            <button class="review-back" data-view="home">← 返回产品</button>
+            <span class="review-read-time">约 5 分钟读完</span>
+            <span class="section-kicker">PRODUCT THINKING</span>
+            <h2>从合租矛盾，<br />到可验证的 AI 协作闭环</h2>
+            <p>一份可点击的产品方案：从问题判断、主流程与优先级，到模型边界和评估体系。</p>
+            <div class="review-head-meta"><span>目标用户 · 2—5 人城市合租青年</span><span>产品阶段 · 可交互 MVP</span><span>核心目标 · 降低协作摩擦</span></div>
+          </div>
+
+          <div class="review-tabs" role="tablist" aria-label="产品思考章节">
+            <button class="review-tab active" role="tab" aria-selected="true" data-review-tab="flow">01 用户主流程</button>
+            <button class="review-tab" role="tab" aria-selected="false" data-review-tab="priority">02 功能优先级</button>
+            <button class="review-tab" role="tab" aria-selected="false" data-review-tab="boundary">03 AI 能力边界</button>
+            <button class="review-tab" role="tab" aria-selected="false" data-review-tab="metrics">04 评估指标</button>
+          </div>
+
+          <div class="review-content">
+            <section class="review-panel active" data-review-panel="flow">
+              <div class="review-section-title"><span>PRIMARY JOURNEY</span><h3>一句话，变成四类共同行动</h3><p>用户不必先判断该去哪个模块；AI 负责理解和整理，人负责最后确认。</p></div>
+              <div class="flow-v0" aria-label="用户主流程示意">
+                <div class="flow-node focus"><small>01</small><strong>描述事件</strong><span>文本 / 账单</span></div>
+                <i>→</i>
+                <div class="flow-node"><small>02</small><strong>AI 理解</strong><span>识别意图与字段</span></div>
+                <i>→</i>
+                <div class="flow-node"><small>03</small><strong>行动草案</strong><span>生成可编辑卡片</span></div>
+                <i>→</i>
+                <div class="flow-node"><small>04</small><strong>人工确认</strong><span>处理风险与歧义</span></div>
+                <i>→</i>
+                <div class="flow-node success"><small>05</small><strong>同步执行</strong><span>更新四个模块</span></div>
+              </div>
+              <div class="journey-demo">
+                <div class="journey-quote">
+                  <span>用户输入</span>
+                  <blockquote>“我刚交了 300 元电费，三个人平摊。”</blockquote>
+                  <div class="confidence-line"><span>意图：共同支出</span><span>置信度 96%</span></div>
+                </div>
+                <div class="journey-output">
+                  <span>AI 行动草案</span>
+                  <div class="draft-line"><b>费用</b><strong>9 月电费</strong><em>¥300.00</em></div>
+                  <div class="draft-line"><b>规则</b><strong>三人平均分摊</strong><em>¥100 / 人</em></div>
+                  <div class="draft-line"><b>控制</b><strong>确认后写入账本</strong><em>可撤销</em></div>
+                  <button class="inline-ai-button" data-open="aiModal" data-ai-prefill="我刚交了300元电费，三个人平摊">亲自走一遍流程 →</button>
+                </div>
+              </div>
+              <div class="branch-grid">
+                <article><span>¥ · 费用</span><h4>识别金额与付款人</h4><p>规则引擎负责精确分摊；确认后写入账本。</p><small>可直接执行</small></article>
+                <article><span>✓ · 值日</span><h4>理解换班或打卡</h4><p>影响他人排班时，先生成请求并等待对方确认。</p><small>需要协商</small></article>
+                <article><span>□ · 物品</span><h4>提取库存与提醒对象</h4><p>更新余量或创建补货提醒，保留登记来源。</p><small>可直接执行</small></article>
+                <article><span>◇ · 公约</span><h4>整理为中性规则文本</h4><p>只生成提案；全部室友同意后才正式生效。</p><small>需要共识</small></article>
+              </div>
+              <div class="principle-note"><span>产品原则</span><strong>AI 负责理解与沟通，规则负责计算与公平，人负责最终决定。</strong></div>
+            </section>
+
+            <section class="review-panel" data-review-panel="priority" hidden>
+              <div class="review-section-title"><span>ROADMAP</span><h3>用岗位证明力决定优先级</h3><p>先完成面试官可以亲自操作的闭环，再补能力边界与评估证据。</p></div>
+              <div class="priority-v0">
+                <article><span>P0 · 已实现</span><h4>AI 主流程闭环</h4><p>自然语言输入、意图识别、可编辑草案、确认、四模块联动与撤销。</p><ul><li>面试官可亲自操作</li><li>关键结果立即可见</li><li>失败时不污染数据</li></ul></article>
+                <article><span>P1 · 已实现</span><h4>AI 产品判断</h4><p>置信度分级、确定性计算、他人权益确认与完整方案说明。</p><ul><li>展示能力边界</li><li>覆盖高风险情形</li><li>提供评估目标</li></ul></article>
+                <article><span>P2 · 后续扩展</span><h4>真实服务连接</h4><p>账号体系、云同步、线上模型、通知渠道与本地生活服务联动。</p><ul><li>需要后端与隐私方案</li><li>不影响核心假设验证</li><li>进入真实试点后再做</li></ul></article>
+              </div>
+              <div class="decision-table" role="table" aria-label="功能优先级矩阵">
+                <div class="decision-row decision-head" role="row"><span>能力</span><span>用户价值</span><span>验证价值</span><span>复杂度</span><span>结论</span></div>
+                <div class="decision-row" role="row"><strong>一句话生成行动</strong><span>高</span><span>高</span><span>中</span><b class="p0">P0</b></div>
+                <div class="decision-row" role="row"><strong>AA 精确计算</strong><span>高</span><span>高</span><span>低</span><b class="p0">P0</b></div>
+                <div class="decision-row" role="row"><strong>低置信度澄清</strong><span>中</span><span>高</span><span>中</span><b class="p1">P1</b></div>
+                <div class="decision-row" role="row"><strong>真实支付 / 通知</strong><span>高</span><span>中</span><span>高</span><b class="p2">P2</b></div>
+              </div>
+              <div class="scope-note"><div><span>本轮不做</span><strong>社交动态、积分排行榜、复杂家庭记账</strong></div><p>它们可能提升活跃，但不会先验证“AI 能否降低共同生活协作成本”这一核心假设。</p></div>
+            </section>
+
+            <section class="review-panel" data-review-panel="boundary" hidden>
+              <div class="review-section-title"><span>RESPONSIBILITY</span><h3>AI、规则与人，各做擅长的事</h3><p>大模型不是万能中枢，涉及金额、公平和权益的环节必须可控。</p></div>
+              <div class="boundary-v0">
+                <article><span>AI · 概率系统</span><strong>理解与沟通</strong><ul><li>识别自然语言意图</li><li>提取实体与上下文</li><li>生成中性提醒文案</li></ul></article>
+                <article><span>RULES · 确定系统</span><strong>计算与公平</strong><ul><li>金额精确到分</li><li>排班轮换与冲突检测</li><li>阈值、权限和状态机</li></ul></article>
+                <article><span>HUMAN · 责任主体</span><strong>确认与决定</strong><ul><li>修正 AI 草案</li><li>同意涉及自身的变更</li><li>处理分歧与例外</li></ul></article>
+              </div>
+              <div class="risk-matrix">
+                <div class="risk-row risk-head"><span>场景</span><span>AI 可以做</span><span>AI 不可以做</span><span>控制方式</span></div>
+                <div class="risk-row"><strong>费用 AA</strong><span>识别票据、提取金额</span><span>自行决定分摊规则</span><b>规则计算 + 本人确认</b></div>
+                <div class="risk-row"><strong>清洁换班</strong><span>理解请求、生成通知</span><span>替他人接受换班</span><b>双方确认</b></div>
+                <div class="risk-row"><strong>物品提醒</strong><span>识别库存、建议补货</span><span>自动下单或扣款</span><b>显式操作</b></div>
+                <div class="risk-row"><strong>室友公约</strong><span>整理中性提案</span><span>单方面让规则生效</span><b>3/3 共识</b></div>
+              </div>
+              <div class="confidence-scale">
+                <article><span>≥ 0.85</span><strong>生成完整草案</strong><p>仍需点击确认后执行</p></article>
+                <i>→</i>
+                <article><span>0.60—0.84</span><strong>高亮不确定字段</strong><p>请用户补充或修正</p></article>
+                <i>→</i>
+                <article><span>&lt; 0.60</span><strong>不生成执行按钮</strong><p>回退到对应手动表单</p></article>
+              </div>
+            </section>
+
+            <section class="review-panel" data-review-panel="metrics" hidden>
+              <div class="review-section-title"><span>EVALUATION</span><h3>结果导向，而不是“看起来聪明”</h3><p>所有数字均作为实验目标展示，不伪装成真实线上成绩。</p></div>
+              <div class="north-star">
+                <div><span>NORTH STAR METRIC</span><strong>每周被确认并完成的协作事件数</strong><p>同时衡量 AI 是否被采用，以及事件是否真正解决，而非只统计对话次数。</p></div>
+                <b>确认 × 完成</b>
+              </div>
+              <div class="funnel" aria-label="核心漏斗目标">
+                <article><small>01</small><strong>发起输入</strong><span>100%</span></article><i>→</i>
+                <article><small>02</small><strong>生成草案</strong><span>≥ 92%</span></article><i>→</i>
+                <article><small>03</small><strong>确认执行</strong><span>≥ 75%</span></article><i>→</i>
+                <article><small>04</small><strong>事件完成</strong><span>≥ 65%</span></article>
+              </div>
+              <div class="metrics-v0">
+                <article><span>正确性门槛</span><strong>100%</strong><p>金额与分摊计算准确率，由规则引擎保障</p></article>
+                <article><span>模型目标</span><strong>≥ 90%</strong><p>四类核心意图 Top-1 识别准确率</p></article>
+                <article><span>安全红线</span><strong>≤ 2%</strong><p>会改变金额、权益或对象的严重幻觉率</p></article>
+                <article><span>体验目标</span><strong>≤ 30s</strong><p>从描述事件到确认执行的中位时长</p></article>
+              </div>
+              <div class="evaluation-plan">
+                <div><span>离线评测</span><strong>200 条合租语料 × 4 类意图</strong><p>覆盖口语、省略、错别字、多意图和缺字段。</p></div>
+                <div><span>可用性测试</span><strong>5 组真实合租用户</strong><p>观察首次成功率、修正次数与完成时长。</p></div>
+                <div><span>灰度上线</span><strong>先建议、后执行</strong><p>达到安全门槛后，再逐步开放低风险自动化。</p></div>
+              </div>
+              <div class="target-disclaimer"><span>说明</span>以上均为 MVP 的验收目标与实验设计，不是伪造的线上成绩。</div>
+            </section>
+          </div>
+        </section>
       </main>
     </div>
 
     <div class="toast" id="toast" role="status"></div>
 
+    <dialog id="aiModal" class="ai-dialog">
+      <div class="ai-modal-shell">
+        <div class="modal-head ai-modal-head">
+          <div><span class="section-kicker">AI ROOMMATE COPILOT</span><h3>一句话，处理一件合租小事</h3><p>本演示在浏览器本地模拟意图识别，不会上传你的输入。</p></div>
+          <button class="close-button" type="button" data-close="aiModal" aria-label="关闭">×</button>
+        </div>
+        <div class="ai-progress" aria-label="AI 处理进度">
+          <span class="active" data-ai-progress="input">1 描述</span><i></i><span data-ai-progress="draft">2 草案</span><i></i><span data-ai-progress="confirm">3 确认</span><i></i><span data-ai-progress="done">4 完成</span>
+        </div>
+        <section class="ai-input-stage" id="aiInputStage">
+          <label for="aiInput">发生了什么？</label>
+          <textarea id="aiInput" rows="4" placeholder="例如：我刚交了 300 元电费，三个人平摊"></textarea>
+          <div class="ai-examples" aria-label="示例输入">
+            <button type="button" data-ai-example="我刚交了300元电费，三个人平摊">费用 AA</button>
+            <button type="button" data-ai-example="厨房值日想换给阿哲，请他确认一下">值日换班</button>
+            <button type="button" data-ai-example="洗洁精只剩1瓶，提醒阿哲补货">物品提醒</button>
+            <button type="button" data-ai-example="以后晚上11点后请戴耳机">新增公约</button>
+          </div>
+          <div class="ai-input-actions"><small>按示例体验完整闭环，字段可在确认前修改。</small><button class="primary-button" type="button" id="aiAnalyze">✦ 生成行动草案</button></div>
+        </section>
+        <section class="ai-result-stage" id="aiResultStage" hidden>
+          <div class="ai-result-meta"><div><span id="aiIntentBadge">共同支出</span><strong id="aiResultTitle">已整理为行动草案</strong></div><span class="confidence-badge" id="aiConfidence">置信度 96%</span></div>
+          <div class="ai-draft" id="aiDraft"></div>
+          <div class="ai-safety-note"><span>盾</span><p><strong>执行前确认</strong><br />涉及共同数据的修改不会由 AI 直接提交；你可以先编辑字段。</p></div>
+          <div class="ai-result-actions"><button class="outline-button" type="button" id="aiRevise">← 修改原话</button><button class="primary-button" type="button" id="aiConfirm">确认并执行</button></div>
+        </section>
+        <section class="ai-done-stage" id="aiDoneStage" hidden>
+          <div class="done-mark">✓</div><span>同步完成</span><h3 id="aiDoneTitle">已写入共同账本</h3><p id="aiDoneDetail">三位室友现在看到的是同一份结果。</p>
+          <div class="done-actions"><button class="outline-button" type="button" id="aiUndo">撤销本次操作</button><button class="primary-button" type="button" id="aiViewResult">查看更新结果 →</button></div>
+        </section>
+      </div>
+    </dialog>
+
     <dialog id="expenseModal">
       <form method="dialog" id="expenseForm">
-        <div class="modal-head"><div><span class="section-kicker">共同账本</span><h3>记一笔支出</h3></div><button class="close-button" value="cancel" aria-label="关闭">×</button></div>
+        <div class="modal-head"><div><span class="section-kicker">共同账本</span><h3>记一笔支出</h3></div><button class="close-button" type="button" data-close="expenseModal" aria-label="关闭">×</button></div>
         <label>费用名称<input name="title" required placeholder="例如：9 月电费" /></label>
         <div class="form-row"><label>金额（元）<input name="amount" type="number" min="0.01" step="0.01" required placeholder="0.00" /></label><label>付款人<select name="payer"><option>小林</option><option>阿哲</option><option>然然</option></select></label></div>
         <label>参与分摊<div class="checkbox-row"><label><input type="checkbox" checked disabled /> 小林</label><label><input type="checkbox" checked disabled /> 阿哲</label><label><input type="checkbox" checked disabled /> 然然</label></div></label>
@@ -196,7 +381,7 @@
 
     <dialog id="supplyModal">
       <form method="dialog" id="supplyForm">
-        <div class="modal-head"><div><span class="section-kicker">共享仓库</span><h3>登记公共物品</h3></div><button class="close-button" value="cancel" aria-label="关闭">×</button></div>
+        <div class="modal-head"><div><span class="section-kicker">共享仓库</span><h3>登记公共物品</h3></div><button class="close-button" type="button" data-close="supplyModal" aria-label="关闭">×</button></div>
         <label>物品名称<input name="name" required placeholder="例如：洗衣液" /></label>
         <div class="form-row"><label>当前数量<input name="count" type="number" min="1" required value="1" /></label><label>单位<input name="unit" required value="件" /></label></div>
         <button class="primary-button full" value="default">加入清单</button>
@@ -205,7 +390,7 @@
 
     <dialog id="ruleModal">
       <form method="dialog" id="ruleForm">
-        <div class="modal-head"><div><span class="section-kicker">共同约定</span><h3>新增一条公约</h3></div><button class="close-button" value="cancel" aria-label="关闭">×</button></div>
+        <div class="modal-head"><div><span class="section-kicker">共同约定</span><h3>新增一条公约</h3></div><button class="close-button" type="button" data-close="ruleModal" aria-label="关闭">×</button></div>
         <label>公约内容<textarea name="content" rows="4" required placeholder="把希望大家共同遵守的约定写清楚"></textarea></label>
         <button class="primary-button full" value="default">发起共同确认</button>
       </form>
