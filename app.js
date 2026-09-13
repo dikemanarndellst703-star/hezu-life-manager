@@ -85,6 +85,7 @@ function setThemePanel(open) {
   const scrim = $('#themeScrim');
   panel.hidden = !open;
   scrim.hidden = !open;
+  $('.app-shell').inert = open;
   $('#themeTrigger').setAttribute('aria-expanded', String(open));
   document.body.classList.toggle('theme-panel-open', open);
   if (open) {
